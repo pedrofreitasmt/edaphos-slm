@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AgroDiagnosisRequest;
-use App\Services\AgroSlmService;
-use App\Services\Ollama\OllamaClient;
+use App\Services\Agro\AgroSlmService;
+use App\Services\Ai\OllamaClient;
 use App\ViewModels\AgroSlm\AgroDashboardViewModel;
 use App\ViewModels\AgroSlm\DiagnosisPayloadViewModel;
 use App\ViewModels\AgroSlm\OllamaHealthViewModel;

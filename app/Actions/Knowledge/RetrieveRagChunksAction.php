@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Agro;
+namespace App\Actions\Knowledge;
 
 use App\Models\KnowledgeChunk;
 use Database\Seeders\KnowledgeBaseSeeder;

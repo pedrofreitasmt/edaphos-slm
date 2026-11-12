@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgroChatController;
 use App\Http\Controllers\AgroDiagnosisController;
 use Illuminate\Support\Facades\Route;
 
@@ -8,6 +9,11 @@ Route::get('/agro-slm', [AgroDiagnosisController::class, 'index'])->name('agro-s
 Route::get('/agro-slm/diagnose', fn () => redirect()->route('agro-slm.dashboard'));
 Route::post('/agro-slm/diagnose', [AgroDiagnosisController::class, 'diagnose'])->name('agro-slm.diagnose');
 Route::get('/agro-slm/status', [AgroDiagnosisController::class, 'status'])->name('agro-slm.status');
+
+// AgroSolo AI Conversational Chat
+Route::get('/agro-slm/chat', [AgroChatController::class, 'index'])->name('agro-slm.chat');
+Route::post('/agro-slm/chat/messages', [AgroChatController::class, 'message'])->name('agro-slm.chat.message');
+Route::post('/agro-slm/chat/stream', [AgroChatController::class, 'stream'])->name('agro-slm.chat.stream');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');

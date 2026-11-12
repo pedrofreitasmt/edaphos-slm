@@ -6,8 +6,8 @@
 #   ollama pull qwen2.5:3b
 #   ollama create agro-slm -f ai/Modelfile
 #
-# Alternativa com Llama 3.2 (3B):
-#   Substitua a linha FROM abaixo por: FROM llama3.2:3b
+# Alternativa com Qwen 2.5 (1.5B) ou Llama 3.2 (3B):
+#   Substitua a linha FROM abaixo por: FROM qwen2.5:1.5b ou FROM llama3.2:3b
 # ============================================================================
 
 FROM qwen2.5:3b

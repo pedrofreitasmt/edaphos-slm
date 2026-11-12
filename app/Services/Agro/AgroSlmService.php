@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Agro;
 
 use App\Actions\Agro\BuildFallbackDiagnosisAction;
 use App\Actions\Agro\GenerateAgroDiagnosisAction;
-use App\Actions\Agro\RetrieveRagChunksAction;
+use App\Actions\Knowledge\RetrieveRagChunksAction;
 use App\Models\KnowledgeChunk;
-use App\Services\Agro\AgroPromptBuilder;
-use App\Services\Ollama\OllamaClient;
+use App\Services\Ai\OllamaClient;
 use App\ViewModels\AgroSlm\AgroDashboardViewModel;
 use App\ViewModels\AgroSlm\DiagnosisPayloadViewModel;
 use App\ViewModels\AgroSlm\KnowledgeBaseSummaryViewModel;
@@ -45,7 +44,7 @@ class AgroSlmService
             'problemas' => ['Erosão Laminar', 'Baixa Fixação de N', 'Baixa Palhada'],
         ];
 
-        $initialRagChunks = $this->retrieveRagChunks->execute($defaultScenario, 4);
+        $initialRagChunks = $this->retrieveRagChunks->execute($defaultScenario, 3);
         $initialPrompt = $this->promptBuilder->buildUserPrompt($defaultScenario, $initialRagChunks);
         $initialLaudo = $this->buildFallback->execute($defaultScenario, $initialRagChunks);
         $ollamaHealth = $this->ollamaClient->checkHealth();
@@ -123,5 +122,15 @@ class AgroSlmService
         ];
 
         return $this->generateDiagnosisAction->execute($params);
+    }
+
+    /**
+     * Check Ollama server health and available models.
+     *
+     * @return array{online: bool, base_url: string, configured_model: string, model_installed: bool, available_models: list<string>, message: string}
+     */
+    public function checkHealth(): array
+    {
+        return $this->ollamaClient->checkHealth();
     }
 }

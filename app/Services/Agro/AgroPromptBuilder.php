@@ -2,20 +2,21 @@
 
 namespace App\Services\Agro;
 
+use Illuminate\Support\Str;
+
 class AgroPromptBuilder
 {
     /**
      * System prompt rigoroso de Doutor em Ciência do Solo e Agroecologia (Embrapa/FAO).
      */
     public const SYSTEM_PROMPT = <<<'PROMPT'
-Você é o AgroSolo AI, um Pesquisador Sênior Ph.D. em Ciência do Solo, Física e Química do Solo, Manejo de Microbacias Hidrográficas e Agroecologia, fundamentado estritamente nos manuais técnicos da Embrapa (Empresa Brasileira de Pesquisa Agropecuária), nos boletins de solos da FAO (Organização das Nações Unidas para a Alimentação e a Agricultura) e na literatura científica consolidada de Ciências Agrárias.
-
-DIRETRIZES TÉCNICAS OBRIGATÓRIAS:
-1. Relacione rigorosamente os condicionantes edafoclimáticos informados (Bioma, Posição no Relevo/Bacia, Textura do Solo, pH em CaCl2, Matéria Orgânica - MOS %, Histórico de Uso e Problemas Observados) às recomendações de manejo conservacionista.
-2. Explique os mecanismos físico-químicos e biológicos envolvidos: atividade de Al3+ (alumínio trocável), saturação por bases (V%), capacidade de troca catiônica (CTC efetiva), adsorção específica de fósforo, disponibilidade de Molibdênio (Mo) e Cobalto (Co) para o complexo enzimático da nitrogenase na Fixação Biológica de Nitrogênio (FBN via Bradyrhizobium/Rhizobium), relação C/N da palhada no Sistema Plantio Direto (SPD) e hidrodinâmica de infiltração vs. escoamento superficial na microbacia.
-3. No arranjo de rotação de culturas, indique sempre pelo menos 3 etapas cronológicas claras (ex: 1. Safra Principal / Correção; 2. Segunda Safra / Consórcio Gramínea-Leguminosa; 3. Entressafra / Adubação Verde e Descompactação Biológica) citando nomes comuns e nomes científicos em itálico ou entre parênteses (ex: Crotalaria juncea, Crotalaria ochroleuca, Cajanus cajan, Urochloa ruziziensis, Pennisetum glaucum, Raphanus sativus, Arachis pintoi).
-4. Utilize prioritariamente os fragmentos documentais da Base de Conhecimento Local (RAG) fornecidos no contexto e cite-os nominalmente no campo "referencias_utilizadas".
-5. Responda EXCLUSIVAMENTE em Português do Brasil (pt-BR), com linguagem científica clara, densa, didática e estritamente aderente ao JSON Schema solicitado.
+Você é o AgroSolo AI, Pesquisador Ph.D. em Ciência do Solo, Física/Química do Solo e Agroecologia (Embrapa/FAO).
+Diretrizes Obrigatórias:
+1. Relacione os parâmetros edafoclimáticos (Bioma, Relevo, Textura, pH em CaCl2, MOS %, Cultura e Problemas) às práticas conservacionistas.
+2. Explique os mecanismos: atividade de Al3+, V%, CTC efetiva, adsorção de P, FBN (Mo/Co/bactérias diazotróficas) e dinâmica C/N da palhada no SPD.
+3. Indique rotação com 3 etapas (Safra Principal, Segunda Safra/Consórcio e Entressafra/Adubação Verde) com nomes científicos.
+4. Utilize os fragmentos RAG fornecidos e cite-os em "referencias_utilizadas".
+5. Responda em Português do Brasil (pt-BR), de forma densa, concisa, técnica e estritamente aderente ao JSON Schema.
 PROMPT;
 
     /**
@@ -149,37 +150,36 @@ PROMPT;
         $ragContext = '';
         foreach ($ragChunks as $idx => $chunk) {
             $num = $idx + 1;
-            $ragContext .= "[DOCUMENTO {$num} | Fonte: {$chunk['source']} | Tópico: {$chunk['topic']}]\n";
-            $ragContext .= "Título: {$chunk['title']}\n";
-            $ragContext .= "Conteúdo Técnico: {$chunk['content']}\n\n";
+            $snippet = Str::words(strip_tags((string) ($chunk['content'] ?? '')), 75, '...');
+            $ragContext .= "[DOC {$num} | {$chunk['source']} - {$chunk['title']}]: {$snippet}\n\n";
         }
 
         $phFormatted = number_format((float) $params['ph'], 1, '.', '');
         $mosFormatted = number_format((float) $params['mos'], 1, '.', '');
 
         return <<<PROMPT
-=== CONTEXTO CIENTÍFICO RECUPERADO DA BASE LOCAL (RAG - EMBRAPA / FAO / WIKIPEDIA) ===
-{$ragContext}=== PARÂMETROS EDAFOCLIMÁTICOS E AMBIENTAIS DA UNIDADE DE PRODUÇÃO ===
-- Bioma Brasileiro: {$params['bioma']}
-- Posição na Bacia Hidrográfica / Relevo: {$params['relevo']}
+=== CONTEXTO CIENTÍFICO RAG (EMBRAPA / FAO / WIKIPEDIA) ===
+{$ragContext}=== CONDICIONANTES EDAFOCLIMÁTICOS ===
+- Bioma: {$params['bioma']}
+- Relevo: {$params['relevo']}
 - Textura do Solo: {$params['textura_solo']}
-- pH em CaCl2: {$phFormatted}
-- Matéria Orgânica do Solo (MOS): {$mosFormatted}%
-- Histórico de Uso / Cultura Atual: {$params['cultura_atual']}
-- Problemas Ambientais e Edáficos Observados: {$problemasTexto}
+- pH CaCl2: {$phFormatted}
+- MOS: {$mosFormatted}%
+- Histórico / Cultura: {$params['cultura_atual']}
+- Problemas: {$problemasTexto}
 
-=== TAREFA DE DIAGNÓSTICO E RECOMENDAÇÃO AGRONÔMICA ===
-Com base exclusivamente nos fragmentos científicos acima (RAG) e nos condicionantes ambientais/edáficos fornecidos, elabore um Laudo Agronômico Conservacionista completo em JSON estruturado contendo:
-1. "resumo_executivo": Síntese densa conectando o bioma ({$params['bioma']}), a classe textural ({$params['textura_solo']}), o pH ({$phFormatted}) e a MOS ({$mosFormatted}%) às intervenções prioritárias.
+=== INSTRUÇÕES DO LAUDO (ESTRITAMENTE CONCISO E DENSO) ===
+Com base nos dados acima e no contexto RAG, gere o JSON estruturado:
+1. "resumo_executivo": Síntese técnica direta de 2 a 3 frases conectando bioma, solo e intervenções.
 2. "diagnostico_fisico_quimico":
-   - "analise_ph_nutrientes": Avaliação química detalhada do pH {$phFormatted} em CaCl2 sobre a atividade de Al3+, saturação por bases (V%), CTC efetiva, necessidade de calagem/gessagem e disponibilidade de P, Ca, Mg e Mo.
-   - "status_materia_organica": Avaliação do teor de MOS de {$mosFormatted}% frente à textura ({$params['textura_solo']}), impactos na retenção de água (CAD), agregação e estabilidade estrutural.
-   - "potencial_fbn": Avaliação da viabilidade da Fixação Biológica de Nitrogênio (simbiose com Bradyrhizobium/Rhizobium), disponibilidade de Molibdênio/Cobalto no pH atual e condições de aeração/temperatura para nodulação.
+   - "analise_ph_nutrientes": 2 a 3 frases sobre pH {$phFormatted}, Al3+, calagem/gessagem e P/Mo.
+   - "status_materia_organica": 2 frases sobre MOS {$mosFormatted}% e retenção hídrica/estrutura.
+   - "potencial_fbn": 2 frases sobre viabilidade da FBN e coinoculação sob o pH atual.
 3. "plano_manejo_conservacionista":
-   - "manejo_bacia_solo": Array com pelo menos 4 práticas detalhadas de engenharia conservacionista de solo e água adequadas à posição de relevo ({$params['relevo']}) e aos problemas ({$problemasTexto}).
-   - "arranjo_rotacao_culturas": Array com 3 etapas cronológicas (Safra Principal, Segunda Safra/Consórcio e Entressafra/Adubação Verde), especificando espécies com nomes comuns e científicos e o objetivo agronômico (relação C/N, descompactação biológica, FBN, formação de palhada).
-4. "relacao_condicionantes_ambientais": Explicação didática aprofundada demonstrando como a interação entre bioma, geomorfologia da bacia e atributos físico-químicos do solo determinou cada escolha técnica.
-5. "referencias_utilizadas": Array listando os títulos e fontes (Embrapa, FAO, Wikipedia) dos documentos do RAG efetivamente empregados.
+   - "manejo_bacia_solo": Lista de 3 a 4 práticas conservacionistas de solo e água.
+   - "arranjo_rotacao_culturas": Lista de 3 etapas sucessivas (Safra Principal, Segunda Safra/Consórcio e Entressafra) com espécies e objetivos.
+4. "relacao_condicionantes_ambientais": Explicação concisa (2 a 3 frases) da correlação técnica.
+5. "referencias_utilizadas": Títulos e fontes dos documentos RAG citados.
 PROMPT;
     }
 }

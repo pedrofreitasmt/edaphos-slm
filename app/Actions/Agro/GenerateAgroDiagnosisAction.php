@@ -2,8 +2,9 @@
 
 namespace App\Actions\Agro;
 
+use App\Actions\Knowledge\RetrieveRagChunksAction;
 use App\Services\Agro\AgroPromptBuilder;
-use App\Services\Ollama\OllamaClient;
+use App\Services\Ai\OllamaClient;
 
 class GenerateAgroDiagnosisAction
 {
@@ -33,7 +34,7 @@ class GenerateAgroDiagnosisAction
      */
     public function execute(array $params): array
     {
-        $ragChunks = $this->retrieveRagChunks->execute($params, 4);
+        $ragChunks = $this->retrieveRagChunks->execute($params, 3);
         $rawPrompt = $this->promptBuilder->buildUserPrompt($params, $ragChunks);
         $jsonSchema = $this->promptBuilder->getJsonSchema();
         $systemPrompt = AgroPromptBuilder::SYSTEM_PROMPT;

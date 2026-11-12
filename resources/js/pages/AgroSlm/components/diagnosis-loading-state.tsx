@@ -128,21 +128,30 @@ export function DiagnosisLoadingState({
                     <div className="flex-1 text-left">
                         <div className="flex items-center justify-between">
                             <span className="text-xs font-bold text-stone-900 dark:text-white">
-                                3. Inferência Neural no Ollama (3B Params)
+                                3. Inferência Neural no Ollama ({modelName})
                             </span>
                             <Cpu className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                         </div>
                         <p className="text-[11px] text-stone-600 dark:text-stone-300">
-                            Sintetizando diagnóstico físico-químico, manejo de
-                            bacia e rotação de culturas...
+                            Sintetizando laudo em JSON estruturado com validação estrita...
                         </p>
                     </div>
                 </div>
             </div>
 
-            <p className="mt-6 text-[11px] text-stone-400 dark:text-stone-500">
-                Execução 100% privada no hardware local • Sem envio de dados
-                para nuvem externa
+            <div className="mt-5 text-center">
+                <p className="text-[11px] font-medium text-emerald-700 dark:text-emerald-400">
+                    ⚡ Processando inferência 100% no seu hardware (CPU local). Tempo médio: ~25s a 45s.
+                </p>
+                {elapsedTenths > 500 && (
+                    <p className="mt-1 text-[10px] text-stone-400 dark:text-stone-500 animate-pulse">
+                        Modelos de 3B parâmetros exigem alta carga de processador. Aguarde enquanto o Ollama finaliza o laudo.
+                    </p>
+                )}
+            </div>
+
+            <p className="mt-3 text-[10px] text-stone-400 dark:text-stone-500">
+                Execução 100% privada e offline no hardware local • Sem envio de dados externos
             </p>
         </div>
     );

@@ -134,6 +134,46 @@ class KnowledgeBaseSeeder extends Seeder
                     'arenização', 'salinização',
                 ],
             ],
+            [
+                'source' => 'Embrapa',
+                'title' => 'Embrapa Soja — Manejo Integrado da Ferrugem Asiática (Phakopsora pachyrhizi) e Estratégias Antirresistência',
+                'topic' => 'Fitossanidade e Proteção de Cultivos',
+                'content' => 'A Ferrugem Asiática da Soja, causada pelo fungo biotrófico Phakopsora pachyrhizi, é a fitopatia de maior potencial destrutivo na sojicultura brasileira, capaz de ocasionar perdas de até 90% por desfolha precoce. O manejo integrado fundamenta-se no Vazio Sanitário (período de 90 dias sem plantas vivas de soja), cultivares precoces semeadas no início da janela e na rotação rigorosa de fungicidas sítio-específicos (triazóis, estrobirulinas e carboxamidas) associados obrigatoriamente a fungicidas multissítios protetores (Mancozebe, Clorotalonil e Oxicloreto de Cobre) para evitar a seleção de cepas resistentes com mutações CYP51 e F129L.',
+                'keywords' => [
+                    'ferrugem asiática', 'phakopsora pachyrhizi', 'vazio sanitário', 'fungicidas sítio-específicos',
+                    'fungicidas multissítios', 'triazóis', 'estrobirulinas', 'carboxamidas', 'mancozebe', 'clorotalonil',
+                ],
+            ],
+            [
+                'source' => 'Embrapa',
+                'title' => 'Embrapa Cerrados e Agrobiologia — Manejo Biológico e Cultural de Fitonematoides (Meloidogyne, Pratylenchus e Heterodera)',
+                'topic' => 'Manejo Biológico de Pragas e Solos',
+                'content' => 'O controle de fitonematoides (Pratylenchus brachyurus, Meloidogyne javanica e Heterodera glycines) em Latossolos e solos arenosos baseia-se no controle biológico com bactérias rizosféricas (Bacillus subtilis e Bacillus amyloliquefaciens produtores de lipopeptídeos) e fungos nematófagos (Purpureocillium lilacinum parasita de ovos e cistos), consorciados com adubação verde de Crotalaria spectabilis (produtora de monocrotalina antagonista). Evita-se Brachiaria ruziziensis em áreas infestadas por Pratylenchus devido ao alto Fator de Reprodução (FR > 1).',
+                'keywords' => [
+                    'nematoides', 'meloidogyne', 'pratylenchus brachyurus', 'heterodera glycines', 'nematoide das galhas',
+                    'nematoide das lesões', 'nematoide de cisto', 'bacillus subtilis', 'purpureocillium lilacinum',
+                    'crotalaria spectabilis',
+                ],
+            ],
+            [
+                'source' => 'Embrapa',
+                'title' => 'Marco Regulatório Tributário do Agro — Impactos da Reforma Tributária (EC 132/2023 e PLP 68/2024) no Produtor Rural, Insumos e Créditos de IBS e CBS',
+                'topic' => 'Gestão Financeira e Tributação no Agronegócio',
+                'content' => 'A Emenda Constitucional nº 132/2023 e o PLP 68/2024 unificam os tributos sobre consumo no IBS e CBS sob regime de não cumulatividade plena. Para o Agronegócio: (1) Redução de 60% na alíquota de IBS/CBS para insumos agropecuários (fertilizantes, calcário, defensivos, sementes e rações); (2) Alíquota zero (100% de redução) para produtos in natura da Cesta Básica Nacional; (3) Produtores rurais pessoas físicas com receita bruta até R$ 3,6 milhões são não contribuintes facultativos, mantendo escrituração pelo LCDPR; (4) Adquirentes tributados (cooperativas e indústrias) têm direito a Crédito Presumido de IBS/CBS na compra de produtores rurais pessoas físicas.',
+                'keywords' => [
+                    'reforma tributária', 'ec 132', 'plp 68', 'ibs', 'cbs', 'crédito presumido', 'insumos agropecuários',
+                    'redução de alíquota 60%', 'cesta básica nacional', 'alíquota zero', 'produtor rural pessoa física', 'lcdpr', 'funrural',
+                ],
+            ],
+            [
+                'source' => 'Embrapa',
+                'title' => 'Embrapa Solos e Cerrados — Dinâmica de Micronutrientes (Boro, Zinco, Cobre e Manganês), Calagem e Adubação Balanceada',
+                'topic' => 'Fertilidade do Solo e Nutrição de Plantas',
+                'content' => 'A calagem excessiva (pH em CaCl2 > 6,2) precipita micronutrientes catiônicos (Zn2+, Cu2+, Fe2+, Mn2+) na forma de hidróxidos insolúveis. O Zinco é essencial na síntese do triptofano e do AIA (crescimento radicular). O Boro (H3BO3) lixivia rapidamente em solos arenosos e é crítico para o tubo polínico e integridade celular (pectinas). Em solos com aplicação contínua de glifosato, pode haver quelação transitória de Manganês, exigindo suplementação via foliar.',
+                'keywords' => [
+                    'micronutrientes', 'boro', 'zinco', 'cobre', 'manganês', 'supercalagem', 'adubação foliar', 'lixiviação de boro',
+                ],
+            ],
         ];
     }
 }

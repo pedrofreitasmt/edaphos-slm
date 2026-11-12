@@ -1,4 +1,5 @@
-import { Database, RefreshCw, Sprout } from 'lucide-react';
+import { Link } from '@inertiajs/react';
+import { Database, MessageSquare, RefreshCw, Sprout } from 'lucide-react';
 import type { KnowledgeBaseInfo, OllamaHealth } from './types';
 
 interface DashboardHeaderProps {
@@ -42,6 +43,14 @@ export function DashboardHeader({
 
                 {/* Right Header Telemetry & Base Status */}
                 <div className="flex flex-wrap items-center gap-2.5">
+                    <Link
+                        href="/agro-slm/chat"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-600/30 bg-emerald-600/10 px-3 py-1.5 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-600 hover:text-white dark:text-emerald-300 dark:hover:bg-emerald-600 dark:hover:text-white"
+                    >
+                        <MessageSquare className="h-3.5 w-3.5" />
+                        <span>Chat com IA</span>
+                    </Link>
+
                     {knowledgeBase && (
                         <button
                             type="button"
